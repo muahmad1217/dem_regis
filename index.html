@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Demo Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Links -->
+    <nav>
+        <a href="index.html">Registration Page</a> |
+        <a href="admin.php">Admin Page</a>
+    </nav>
+
+    <h1>Student Demo Registration</h1>
+    <form id="registration-form" action="register.php" method="POST">
+        <label for="id">Student ID:</label>
+        <input type="text" id="id" name="id" required><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+
+        <label for="project_title">Project Title:</label>
+        <input type="text" id="project_title" name="project_title" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required><br>
+
+        <label for="time_slot">Time Slot:</label>
+        <select id="time_slot" name="time_slot" required></select><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        // Populate time slots dynamically
+        window.onload = function () {
+            fetch('get_time_slots.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('time_slot').innerHTML = data;
+                });
+
+            document.getElementById('registration-form').onsubmit = function (event) {
+                const studentID = document.getElementById('id').value;
+                if (studentID.length !== 8 || isNaN(studentID)) {
+                    alert("Student ID must be an 8-digit number.");
+                    event.preventDefault();
+                }
+
+                const phone = document.getElementById('phone').value;
+                const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+                if (!phonePattern.test(phone)) {
+                    alert("Phone number must be in the format 999-999-9999.");
+                    event.preventDefault();
+                }
+            };
+        };
+    </script>
+</body>
+</html>
